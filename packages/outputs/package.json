@@ -1,0 +1,11 @@
+{
+  "name": "@multiface.js/outputs",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "private": false,
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "description": "Adaptive rendering components for Multiface.js SDK"
+} 
