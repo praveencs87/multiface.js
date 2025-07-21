@@ -1,8 +1,16 @@
 # multiface.js
 
+[![npm version](https://img.shields.io/npm/v/@multiface.js/inputs?label=@multiface.js/inputs)](https://www.npmjs.com/package/@multiface.js/inputs)
+[![npm version](https://img.shields.io/npm/v/@multiface.js/core?label=@multiface.js/core)](https://www.npmjs.com/package/@multiface.js/core)
+[![npm version](https://img.shields.io/npm/v/@multiface.js/outputs?label=@multiface.js/outputs)](https://www.npmjs.com/package/@multiface.js/outputs)
+[![npm version](https://img.shields.io/npm/v/@multiface.js/ai?label=@multiface.js/ai)](https://www.npmjs.com/package/@multiface.js/ai)
+[![npm version](https://img.shields.io/npm/v/@multiface.js/utils?label=@multiface.js/utils)](https://www.npmjs.com/package/@multiface.js/utils)
+
 **Adaptive Multimodal UI SDK**
 
 Build next-generation UIs that combine chat, GUI, and voice, with AI integration and seamless context switching. Works across web and mobile apps.
+
+> **GitHub:** [praveencs87/multiface.js](https://github.com/praveencs87/multiface.js)
 
 ---
 
@@ -49,11 +57,12 @@ function MyDashboard() {
 ---
 
 ## Packages
-- [`@multiface.js/inputs`](./packages/inputs) — Chat, Voice, GUI input components
-- [`@multiface.js/core`](./packages/core) — Orchestration engine (mode/context switching)
-- [`@multiface.js/outputs`](./packages/outputs) — Adaptive output renderer
-- [`@multiface.js/ai`](./packages/ai) — AI handler (ESM only)
-- [`@multiface.js/utils`](./packages/utils) — Shared helpers
+
+- [`@multiface.js/inputs`](https://www.npmjs.com/package/@multiface.js/inputs) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/inputs)) — Chat, Voice, GUI input components
+- [`@multiface.js/core`](https://www.npmjs.com/package/@multiface.js/core) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/core)) — Orchestration engine (mode/context switching)
+- [`@multiface.js/outputs`](https://www.npmjs.com/package/@multiface.js/outputs) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/outputs)) — Adaptive output renderer
+- [`@multiface.js/ai`](https://www.npmjs.com/package/@multiface.js/ai) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/ai)) — AI handler (ESM only)
+- [`@multiface.js/utils`](https://www.npmjs.com/package/@multiface.js/utils) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/utils)) — Shared helpers
 
 ---
 
