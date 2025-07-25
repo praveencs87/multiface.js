@@ -1,22 +1,21 @@
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 
 export interface OpenAIHandlerOptions {
   apiKey: string;
 }
 
 export class OpenAIHandler {
-  private openai: OpenAIApi;
+  private openai: OpenAI;
 
   constructor(options: OpenAIHandlerOptions) {
-    const configuration = new Configuration({ apiKey: options.apiKey });
-    this.openai = new OpenAIApi(configuration);
+    this.openai = new OpenAI({ apiKey: options.apiKey });
   }
 
   async complete(prompt: string, model: string = 'gpt-3.5-turbo') {
-    const response = await this.openai.createChatCompletion({
+    const response = await this.openai.chat.completions.create({
       model,
       messages: [{ role: 'user', content: prompt }],
     });
-    return response.data.choices[0]?.message?.content || '';
+    return response.choices[0]?.message?.content || '';
   }
 } 

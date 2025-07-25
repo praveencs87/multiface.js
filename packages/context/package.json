@@ -1,0 +1,33 @@
+{
+  "name": "@multiface.js/context",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.5",
+  "description": "Context awareness and memory management for multimodal interactions",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest"
+  },
+  "keywords": ["context", "memory", "awareness", "multimodal", "ai", "personalization"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.1.0",
+    "zustand": "^5.0.2",
+
+    "@multiface.js/fusion": "^1.0.0",
+    "@multiface.js/sensors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "@react-native-async-storage/async-storage": "^1.19.0"
+  }
+}

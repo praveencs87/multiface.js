@@ -9,6 +9,10 @@ const packages = [
   'outputs',
   'ai',
   'utils',
+  'fusion',
+  'react-native',
+  'sensors',
+  'context',
 ];
 
 export default packages.map(pkg => ({
@@ -29,10 +33,24 @@ export default packages.map(pkg => ({
   external: [
     'react',
     'react-dom',
+    'react-native',
     'openai',
+    'zustand',
+    '@react-native-voice/voice',
+    'react-native-camera',
+    'react-native-gesture-handler',
+    'react-native-sensors',
+    '@react-native-async-storage/async-storage',
+    '@react-native-community/geolocation',
+    '@multiface.js/core',
+    '@multiface.js/fusion',
+    '@multiface.js/sensors',
   ],
   plugins: [
-    resolve(),
+    resolve({
+      preferBuiltins: false,
+      browser: true,
+    }),
     commonjs(),
     typescript({
       tsconfig: `packages/${pkg}/tsconfig.json`,

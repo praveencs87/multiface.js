@@ -5,8 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "module": "ES2020",
+    "moduleResolution": "node"
   },
   "include": ["src"]
 } 

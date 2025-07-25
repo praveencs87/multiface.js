@@ -1,0 +1,29 @@
+{
+  "name": "@multiface.js/fusion",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.5",
+  "description": "Multi-modal input fusion engine for simultaneous interaction handling",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest"
+  },
+  "keywords": ["multimodal", "input-fusion", "simultaneous-input", "ui", "react"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.1.0",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  }
+}

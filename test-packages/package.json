@@ -1,0 +1,23 @@
+{
+  "name": "test-packages",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@multiface.js/ai": "^0.1.0",
+    "@multiface.js/context": "^1.0.5",
+    "@multiface.js/core": "^0.1.0",
+    "@multiface.js/fusion": "^1.0.5",
+    "@multiface.js/inputs": "^0.1.0",
+    "@multiface.js/outputs": "^0.1.0",
+    "@multiface.js/react-native": "^1.0.5",
+    "@multiface.js/sensors": "^1.0.5",
+    "@multiface.js/utils": "^0.1.0"
+  }
+}

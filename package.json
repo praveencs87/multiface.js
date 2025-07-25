@@ -1,13 +1,21 @@
 {
   "name": "multimodal-ui-sdk",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "directories": {
     "doc": "docs",
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "build:packages": "npm run build",
+    "publish:all": "npm run build && npm run publish:fusion && npm run publish:react-native && npm run publish:sensors && npm run publish:context",
+    "publish:fusion": "cd packages/fusion && npm publish",
+    "publish:react-native": "cd packages/react-native && npm publish",
+    "publish:sensors": "cd packages/sensors && npm publish",
+    "publish:context": "cd packages/context && npm publish"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,394 @@
+import React, { useState, useRef, useCallback } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
+import { RNCamera } from 'react-native-camera';
+
+export interface CameraData {
+  type: 'photo' | 'text_recognition' | 'barcode' | 'face_detection';
+  uri?: string;
+  base64?: string;
+  text?: string;
+  barcodes?: any[];
+  faces?: any[];
+  width?: number;
+  height?: number;
+}
+
+export interface RNCameraInputProps {
+  onCapture: (data: CameraData) => void;
+  mode?: 'photo' | 'text' | 'barcode' | 'face';
+  autoCapture?: boolean;
+  captureQuality?: number;
+  style?: any;
+  cameraStyle?: any;
+  buttonStyle?: any;
+  textStyle?: any;
+}
+
+export const RNCameraInput: React.FC<RNCameraInputProps> = ({
+  onCapture,
+  mode = 'photo',
+  autoCapture = false,
+  captureQuality = 0.8,
+  style,
+  cameraStyle,
+  buttonStyle,
+  textStyle,
+}) => {
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [lastCapture, setLastCapture] = useState<CameraData | null>(null);
+  const cameraRef = useRef<any>(null);
+
+  React.useEffect(() => {
+    checkPermissions();
+  }, []);
+
+  const checkPermissions = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA
+        );
+        setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
+      } catch (err) {
+        console.warn('Camera permission error:', err);
+        setHasPermission(false);
+      }
+    } else {
+      setHasPermission(true); // iOS handles permissions automatically
+    }
+  };
+
+  const takePicture = useCallback(async () => {
+    if (!cameraRef.current || isCapturing) return;
+
+    try {
+      setIsCapturing(true);
+      
+      const options = {
+        quality: captureQuality,
+        base64: true,
+        skipProcessing: false,
+      };
+
+      const data = await cameraRef.current.takePictureAsync(options);
+      
+      const cameraData: CameraData = {
+        type: 'photo',
+        uri: data.uri,
+        base64: data.base64,
+        width: data.width,
+        height: data.height,
+      };
+
+      setLastCapture(cameraData);
+      onCapture(cameraData);
+    } catch (error) {
+      console.error('Camera capture error:', error);
+      Alert.alert('Error', 'Failed to capture image');
+    } finally {
+      setIsCapturing(false);
+    }
+  }, [captureQuality, isCapturing, onCapture]);
+
+  const onTextRecognized = useCallback((textBlocks: any) => {
+    if (!autoCapture || mode !== 'text') return;
+
+    const recognizedText = textBlocks.textBlocks
+      .map((block: any) => block.value)
+      .join(' ');
+
+    if (recognizedText.trim()) {
+      const cameraData: CameraData = {
+        type: 'text_recognition',
+        text: recognizedText,
+      };
+
+      setLastCapture(cameraData);
+      onCapture(cameraData);
+    }
+  }, [autoCapture, mode, onCapture]);
+
+  const onBarCodeRead = useCallback((barcode: any) => {
+    if (!autoCapture || mode !== 'barcode') return;
+
+    const cameraData: CameraData = {
+      type: 'barcode',
+      barcodes: [barcode],
+      text: barcode.data,
+    };
+
+    setLastCapture(cameraData);
+    onCapture(cameraData);
+  }, [autoCapture, mode, onCapture]);
+
+  const onFacesDetected = useCallback((faces: any) => {
+    if (!autoCapture || mode !== 'face' || !faces.faces.length) return;
+
+    const cameraData: CameraData = {
+      type: 'face_detection',
+      faces: faces.faces,
+    };
+
+    setLastCapture(cameraData);
+    onCapture(cameraData);
+  }, [autoCapture, mode, onCapture]);
+
+  if (hasPermission === null) {
+    return (
+      <View style={[styles.container, style]}>
+        <Text style={[styles.statusText, textStyle]}>
+          Requesting camera permission...
+        </Text>
+      </View>
+    );
+  }
+
+  if (hasPermission === false) {
+    return (
+      <View style={[styles.container, style]}>
+        <Text style={[styles.errorText, textStyle]}>
+          Camera permission required
+        </Text>
+        <TouchableOpacity
+          style={[styles.permissionButton, buttonStyle]}
+          onPress={checkPermissions}
+        >
+          <Text style={[styles.buttonText, textStyle]}>Grant Permission</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const getCameraType = () => {
+    switch (mode) {
+      case 'text':
+        return RNCamera.Constants.Type.back;
+      case 'barcode':
+        return RNCamera.Constants.Type.back;
+      case 'face':
+        return RNCamera.Constants.Type.front;
+      default:
+        return RNCamera.Constants.Type.back;
+    }
+  };
+
+  const getTrackingEnabled = () => {
+    return {
+      textRecognition: mode === 'text',
+      barCodeTypes: mode === 'barcode' ? ['qr'] : [],
+      faceDetection: mode === 'face',
+    };
+  };
+
+  return (
+    <View style={[styles.container, style]}>
+      <RNCamera
+        ref={cameraRef}
+        style={[styles.camera, cameraStyle]}
+        type={getCameraType()}
+        flashMode={RNCamera.Constants.FlashMode.auto}
+        androidCameraPermissionOptions={{
+          title: 'Permission to use camera',
+          message: 'We need your permission to use your camera',
+          buttonPositive: 'Ok',
+          buttonNegative: 'Cancel',
+        }}
+        onTextRecognized={onTextRecognized}
+        onBarCodeRead={onBarCodeRead}
+        onFacesDetected={onFacesDetected}
+        {...getTrackingEnabled()}
+      >
+        <View style={styles.overlay}>
+          <View style={styles.topOverlay}>
+            <Text style={[styles.modeText, textStyle]}>
+              {mode.charAt(0).toUpperCase() + mode.slice(1)} Mode
+              {autoCapture && ' (Auto)'}
+            </Text>
+          </View>
+
+          <View style={styles.bottomOverlay}>
+            {!autoCapture && (
+              <TouchableOpacity
+                style={[
+                  styles.captureButton,
+                  isCapturing && styles.capturingButton,
+                  buttonStyle,
+                ]}
+                onPress={takePicture}
+                // disabled={isCapturing} // Commented out for type compatibility
+              >
+                <Text style={[styles.captureButtonText, textStyle]}>
+                  {isCapturing ? 'Capturing...' : '📷'}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      </RNCamera>
+
+      {lastCapture && (
+        <View style={styles.lastCaptureContainer}>
+          <Text style={[styles.lastCaptureText, textStyle]}>
+            Last capture: {lastCapture.type}
+            {lastCapture.text && ` - "${lastCapture.text.substring(0, 50)}..."`}
+          </Text>
+          {lastCapture.uri && (
+            <Image source={{ uri: lastCapture.uri }} style={styles.thumbnail} />
+          )}
+        </View>
+      )}
+    </View>
+  );
+};
+
+// Hook for easier camera integration with fusion
+export const useCameraWithFusion = (onFusedOutput: (fusedInput: any) => void) => {
+  // const { processInput } = useFusion({ onFusedOutput }); // Commented out for build compatibility
+
+  const handleCameraCapture = useCallback((cameraData: CameraData) => {
+    let inputData: string;
+    let confidence: number;
+
+    switch (cameraData.type) {
+      case 'text_recognition':
+        inputData = cameraData.text || '';
+        confidence = 0.85;
+        break;
+      case 'barcode':
+        inputData = cameraData.text || '';
+        confidence = 0.95;
+        break;
+      case 'face_detection':
+        inputData = `${cameraData.faces?.length || 0} faces detected`;
+        confidence = 0.9;
+        break;
+      default:
+        inputData = 'image captured';
+        confidence = 0.8;
+    }
+
+    // processInput({
+    //   type: 'camera',
+    //   data: inputData,
+    //   priority: 2,
+    //   confidence,
+    //   metadata: {
+    //     cameraData,
+    //     timestamp: Date.now(),
+    //   },
+    // });
+    
+    // For now, just call the callback directly
+    onFusedOutput({
+      type: 'camera',
+      data: inputData,
+      metadata: { cameraData }
+    });
+  }, [onFusedOutput]);
+
+  return { handleCameraCapture };
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  camera: {
+    flex: 1,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  topOverlay: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingTop: 50,
+  },
+  bottomOverlay: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingBottom: 50,
+  },
+  modeText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  captureButton: {
+    backgroundColor: 'white',
+    borderRadius: 35,
+    width: 70,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: '#007AFF',
+  },
+  capturingButton: {
+    backgroundColor: '#FF3B30',
+    borderColor: '#FF3B30',
+  },
+  captureButtonText: {
+    fontSize: 24,
+    color: '#007AFF',
+  },
+  statusText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 20,
+  },
+  errorText: {
+    color: '#FF3B30',
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 20,
+  },
+  permissionButton: {
+    backgroundColor: '#FF9500',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  lastCaptureContainer: {
+    position: 'absolute',
+    top: 100,
+    right: 10,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding: 10,
+    borderRadius: 8,
+    maxWidth: 200,
+  },
+  lastCaptureText: {
+    color: 'white',
+    fontSize: 12,
+  },
+  thumbnail: {
+    width: 50,
+    height: 50,
+    marginTop: 5,
+    borderRadius: 4,
+  },
+});

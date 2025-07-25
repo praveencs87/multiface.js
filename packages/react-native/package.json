@@ -1,0 +1,37 @@
+{
+  "name": "@multiface.js/react-native",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.5",
+  "description": "React Native specific components and utilities for multimodal UI",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest"
+  },
+  "keywords": ["react-native", "multimodal", "voice", "gesture", "camera", "ui"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-native": "^0.74.0",
+    "@multiface.js/fusion": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-native": "^0.74.0",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.70.0",
+    "@react-native-voice/voice": "^3.2.4",
+    "react-native-camera": "^4.2.1",
+    "react-native-gesture-handler": "^2.12.0",
+    "react-native-sensors": "^7.3.6",
+    "@react-native-async-storage/async-storage": "^1.19.0"
+  }
+}
