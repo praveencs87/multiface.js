@@ -1,0 +1,10 @@
+{
+  "name": "@multiface.js/wasm-utils",
+  "version": "0.1.0",
+  "description": "Reusable WebAssembly utilities for Multiface.js and JS projects.",
+  "main": "js/wasm-utils.js",
+  "files": ["js", "README.md"],
+  "keywords": ["wasm", "webassembly", "multiface", "utilities", "sdk"],
+  "author": "Praveen CS",
+  "license": "MIT"
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WASM Utils UI Demo</title>
+</head>
+<body>
+  <h1>WASM Utils UI Demo</h1>
+  <div>
+    <h3>Add Two Numbers (WASM)</h3>
+    <input id="numA" type="number" value="2" /> +
+    <input id="numB" type="number" value="3" />
+    <button onclick="addNumbers()">Add</button>
+    <span id="sumResult"></span>
+  </div>
+  <div style="margin-top:2em">
+    <h3>Reverse String (WASM)</h3>
+    <input id="strInput" type="text" value="multiface" />
+    <button onclick="reverseString()">Reverse</button>
+    <span id="revResult"></span>
+  </div>
+  <script type="module" src="wasm-utils-demo.js"></script>
+</body>
+</html>
