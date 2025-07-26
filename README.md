@@ -58,11 +58,106 @@ function MyDashboard() {
 
 ## Packages
 
-- [`@multiface.js/inputs`](https://www.npmjs.com/package/@multiface.js/inputs) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/inputs)) — Chat, Voice, GUI input components
-- [`@multiface.js/core`](https://www.npmjs.com/package/@multiface.js/core) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/core)) — Orchestration engine (mode/context switching)
-- [`@multiface.js/outputs`](https://www.npmjs.com/package/@multiface.js/outputs) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/outputs)) — Adaptive output renderer
-- [`@multiface.js/ai`](https://www.npmjs.com/package/@multiface.js/ai) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/ai)) — AI handler (ESM only)
-- [`@multiface.js/utils`](https://www.npmjs.com/package/@multiface.js/utils) ([source](https://github.com/praveencs87/multiface.js/tree/main/packages/utils)) — Shared helpers
+| Package | Description | Platform |
+|---|---|---|
+| [`@multiface.js/core`](https://www.npmjs.com/package/@multiface.js/core) | Adaptive mode/context manager | Web, Node.js, React Native |
+| [`@multiface.js/inputs`](https://www.npmjs.com/package/@multiface.js/inputs) | Chat, Voice, GUI input components | Web, Node.js |
+| [`@multiface.js/outputs`](https://www.npmjs.com/package/@multiface.js/outputs) | Adaptive output renderer | Web, Node.js |
+| [`@multiface.js/ai`](https://www.npmjs.com/package/@multiface.js/ai) | AI handler (OpenAI, etc.) | Web, Node.js (ESM) |
+| [`@multiface.js/utils`](https://www.npmjs.com/package/@multiface.js/utils) | Shared helpers | Web, Node.js |
+| [`@multiface.js/fusion`](https://www.npmjs.com/package/@multiface.js/fusion) | Multi-modal input fusion (voice, chat, gestures, touch, etc.) | Web, Node.js, React Native |
+| [`@multiface.js/react-native`](https://www.npmjs.com/package/@multiface.js/react-native) | Native mobile components (voice, gesture, camera) | React Native only |
+| [`@multiface.js/sensors`](https://www.npmjs.com/package/@multiface.js/sensors) | Device sensor integration (accelerometer, location, etc.) | React Native only |
+| [`@multiface.js/context`](https://www.npmjs.com/package/@multiface.js/context) | Context awareness and memory management | Web, Node.js, React Native |
+
+---
+
+## Installation
+
+```bash
+# Web/Node.js (Universal packages)
+npm install @multiface.js/core @multiface.js/inputs @multiface.js/outputs @multiface.js/fusion @multiface.js/context
+
+# React Native (Mobile-specific packages)
+npm install @multiface.js/react-native @multiface.js/sensors
+```
+
+> For AI integration, see [`@multiface.js/ai`](./packages/ai) (ESM only)
+
+---
+
+## Quick Usage Examples
+
+### Web/Node.js Example
+```tsx
+import { ChatInput, VoiceInput, GUIControls } from '@multiface.js/inputs';
+import { AdaptiveModeManager } from '@multiface.js/core';
+import { AdaptiveRenderer } from '@multiface.js/outputs';
+import { InputFusionManager, useFusion } from '@multiface.js/fusion';
+import { ContextManager } from '@multiface.js/context';
+
+const modeManager = new AdaptiveModeManager({ initialMode: 'chat' });
+
+function App() {
+  // ...state and handlers
+  return (
+    <div>
+      <ChatInput onSend={...} />
+      <VoiceInput onResult={...} />
+      <GUIControls ... />
+      <AdaptiveRenderer mode={...} message={...} guiComponent={...} />
+    </div>
+  );
+}
+```
+
+### React Native Example
+```tsx
+import { RNVoiceInput, RNGestureHandler } from '@multiface.js/react-native';
+import { SensorManager, useSensors } from '@multiface.js/sensors';
+import { InputFusionManager, useFusion } from '@multiface.js/fusion';
+import { ContextManager } from '@multiface.js/context';
+
+function AssistantScreen() {
+  // ...fusion and sensor hooks
+  return (
+    <View>
+      <RNVoiceInput onResult={...} />
+      <RNGestureHandler onGesture={...} />
+      {/* More components */}
+    </View>
+  );
+}
+```
+
+---
+
+## Example Apps
+- **Web Demo:** See [`examples/smart-home-demo`](./examples/smart-home-demo)
+- **React Native Demo:** See [`examples/personal-assistant-rn`](./examples/personal-assistant-rn)
+
+---
+
+## Roadmap & Status
+- ✅ Modular packages for web and React Native
+- ✅ Multi-modal fusion engine (voice, chat, gesture, touch)
+- ✅ Context and memory management
+- ✅ Device sensor integration (React Native)
+- ✅ Proper Rollup builds and TypeScript support
+- ⏳ Personal assistant demo app (React Native)
+- ⏳ Comprehensive documentation & API guides
+- ⏳ Re-enable advanced features (camera, biometrics, etc.)
+- ⏳ Community feedback & iteration
+
+---
+
+## Philosophy
+Multiface.js is built on the belief that UI frameworks should support multimodal, adaptive, and AI-powered experiences by default. We aim to make it easy for developers to build interfaces that adapt to users—not the other way around.
+
+---
+
+## License
+MIT
 
 ---
 
